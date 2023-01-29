@@ -1,11 +1,13 @@
 <template lang="pug">
 section
   header
-    button(v-if='$store.state.isSignin', type='button', @click='signout') Signout
-    button(v-else, type='button', @click='showSigninModal = true') Signin
-    template(v-if='showSigninModal')
-      atoms-signin
-      button(type='button', @click='showSigninModal = false') close
+    atoms-button(v-if='$store.state.isSignin', @click='signout') Signout
+    atoms-button(v-else, @click='showSigninModal = true') Signin
+    atoms-modal(
+      v-if='showSigninModal',
+      @close-clicked='showSigninModal = false'
+    )
+      organisms-signin
   section
     nuxt
   footer footer

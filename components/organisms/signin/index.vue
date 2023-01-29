@@ -1,15 +1,15 @@
 <template lang="pug">
 form
-  input(v-model='email')
-  input(type='password', v-model='password')
-  button(type='button', @click='signin') Signin
+  atoms-input-text(v-model='email')
+  atoms-input-password(v-model='password')
+  atoms-button(type='button', @click='signin') Signin
 </template>
 
 <script>
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 
 export default {
-  name: 'AtomsSignin',
+  name: 'OrganismsSignin',
   data() {
     return {
       email: '',
