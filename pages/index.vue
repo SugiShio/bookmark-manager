@@ -1,10 +1,10 @@
 <template lang="pug">
-  tutorial
+h1 hello world
 </template>
 
 <script>
 import Vue from 'vue'
 
 export default Vue.extend({
-  name: 'IndexPage'
+  name: 'IndexPage',
 })
