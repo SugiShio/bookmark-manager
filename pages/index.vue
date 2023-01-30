@@ -1,6 +1,6 @@
 <template lang="pug">
 main
-  organisms-bookmark-form(@bookmark-changed='onBookmarkChanged')
+  organisms-bookmark-form(@bookmark-changed='setBookmarks')
   ul
     li(v-for='tag in tags') {{ tag.name }}
   ul
@@ -12,28 +12,6 @@ import { collection, query, getDocs, where } from 'firebase/firestore'
 import { db } from '~/plugins/firebase'
 import { Bookmark } from '~/models/bookmark'
 import { Tag } from '~/models/tag'
-
-const getTags = async () => {
-  const q = query(collection(db, 'tags'))
-
-  const querySnapshot = await getDocs(q)
-  const result = []
-  querySnapshot.forEach((doc) => {
-    result.push(new Tag(doc.data()))
-  })
-  return result
-}
-
-const getBookmarks = async (uid) => {
-  const q = query(collection(db, 'bookmarks'), where('uid', '==', uid))
-
-  const querySnapshot = await getDocs(q)
-  const result = []
-  querySnapshot.forEach((doc) => {
-    result.push(new Bookmark(doc.data()))
-  })
-  return result
-}
 
 export default {
   name: 'IndexPage',
@@ -52,31 +30,40 @@ export default {
     },
   },
   watch: {
-    async isSignin(isSignin) {
+    isSignin(isSignin) {
       if (isSignin) {
-        try {
-          this.tags = await getTags()
-          this.bookmarks = await getBookmarks(this.uid)
-        } catch (error) {
-          console.error(error)
-        }
+        this.setBookmarks()
+        this.setTags()
       }
     },
   },
-  async created() {
+  created() {
     if (this.isSignin) {
-      try {
-        this.tags = await getTags()
-        this.bookmarks = await getBookmarks(this.uid)
-      } catch (error) {
-        console.error(error)
-      }
+      this.setBookmarks()
+      this.setTags()
     }
   },
   methods: {
-    async onBookmarkChanged() {
+    async setBookmarks() {
+      const q = query(collection(db, 'bookmarks'), where('uid', '==', this.uid))
       try {
-        this.bookmarks = await getBookmarks(this.uid)
+        const querySnapshot = await getDocs(q)
+        this.bookmarks = []
+        querySnapshot.forEach((doc) => {
+          this.bookmarks.push(new Bookmark(doc.data()))
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async setTags() {
+      const q = query(collection(db, 'tags'), where('uid', '==', this.uid))
+      try {
+        const querySnapshot = await getDocs(q)
+        this.tags = []
+        querySnapshot.forEach((doc) => {
+          this.tags.push(new Tag(doc.data()))
+        })
       } catch (error) {
         console.error(error)
       }
