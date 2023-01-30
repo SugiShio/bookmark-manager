@@ -1,6 +1,6 @@
 <template lang="pug">
 main
-  atoms-input-text(v-model='url')
+  organisms-bookmark-form(@bookmark-changed='onBookmarkChanged')
   ul
     li(v-for='tag in tags') {{ tag.name }}
   ul
@@ -41,21 +41,22 @@ export default {
     return {
       bookmarks: [],
       tags: [],
-      url: '',
     }
   },
   computed: {
     isSignin() {
       return this.$store.state.isSignin
     },
+    uid() {
+      return this.$store.state.user.uid
+    },
   },
   watch: {
     async isSignin(isSignin) {
       if (isSignin) {
-        const uid = this.$store.state.user.uid
         try {
           this.tags = await getTags()
-          this.bookmarks = await getBookmarks(uid)
+          this.bookmarks = await getBookmarks(this.uid)
         } catch (error) {
           console.error(error)
         }
@@ -64,14 +65,22 @@ export default {
   },
   async created() {
     if (this.isSignin) {
-      const uid = this.$store.state.user.uid
       try {
         this.tags = await getTags()
-        this.bookmarks = await getBookmarks(uid)
+        this.bookmarks = await getBookmarks(this.uid)
       } catch (error) {
         console.error(error)
       }
     }
+  },
+  methods: {
+    async onBookmarkChanged() {
+      try {
+        this.bookmarks = await getBookmarks(this.uid)
+      } catch (error) {
+        console.error(error)
+      }
+    },
   },
 }
 </script>

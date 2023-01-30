@@ -1,5 +1,5 @@
 <template lang="pug">
-input.a-input-text(@input='$emit("input", $event.target.value)')
+input.a-input-text(:value='value', @input='$emit("input", $event.target.value)')
 </template>
 
 <script>

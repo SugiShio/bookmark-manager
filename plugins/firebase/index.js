@@ -13,3 +13,28 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig)
 export const db = getFirestore(app)
+
+export const getFirestoreFormat = (object) => {
+  return normalizeObject(object)
+}
+
+const normalizeObject = (object) => {
+  if (object === undefined) {
+    return null
+  } else if (typeof object === 'string' || object === null) {
+    return object
+  } else if (Array.isArray(object)) {
+    return object.map((o) => {
+      return normalizeObject(o)
+    })
+  } else if (Object.keys(object).length) {
+    const result = {}
+
+    Object.keys(object).forEach((key) => {
+      result[key] = normalizeObject(object[key])
+    })
+    return result
+  }
+
+  return object
+}

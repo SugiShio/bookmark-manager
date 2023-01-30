@@ -1,6 +1,7 @@
 <template lang="pug">
 .a-input-password
   input.a-input-password__input(
+    :value='value',
     :type='inputType',
     @input='$emit("input", $event.target.value)'
   )
