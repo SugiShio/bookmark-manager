@@ -1,11 +1,18 @@
 <template lang="pug">
-input.a-input-text(:value='value', @input='$emit("input", $event.target.value)')
+input.a-input-text(
+  :placeholder='placeholder',
+  :value='value',
+  @change='$emit("change", $event.target.value)',
+  @input='$emit("input", $event.target.value)',
+  @focus='$emit("focus")'
+)
 </template>
 
 <script>
 export default {
   name: 'AtomsInputText',
   props: {
+    placeholder: { type: String, default: '' },
     value: { type: String, default: '' },
   },
 }

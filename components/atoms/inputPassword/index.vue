@@ -3,7 +3,8 @@
   input.a-input-password__input(
     :value='value',
     :type='inputType',
-    @input='$emit("input", $event.target.value)'
+    @input='$emit("input", $event.target.value)',
+    @focus='$emit("focus")'
   )
   button.a-input-password__button(
     type='button',
