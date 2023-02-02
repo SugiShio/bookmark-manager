@@ -1,5 +1,5 @@
 <template lang="pug">
-main
+main.p-index
   organisms-bookmark-form(@bookmark-changed='setBookmarks')
   ul
     li(v-for='tag in tags') {{ tag.name }}
@@ -71,3 +71,11 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.p-index {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+</style>

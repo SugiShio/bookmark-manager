@@ -51,3 +51,10 @@ export default {
 }
 </script>
 
+<style lang="scss">
+@import '~/assets/stylesheets/variables';
+
+html {
+  background-color: $color-main;
+}
+</style>

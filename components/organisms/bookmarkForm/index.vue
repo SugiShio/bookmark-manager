@@ -55,3 +55,22 @@ export default {
   },
 }
 </script>
+
+<style lang="scss" scoped>
+.o-bookmark-form {
+  &__item {
+    display: flex;
+  }
+
+  &__label {
+    padding-top: 5px;
+    color: #fff;
+    width: 70px;
+    flex-shrink: 0;
+  }
+
+  &__content {
+    flex-grow: 1;
+  }
+}
+</style>

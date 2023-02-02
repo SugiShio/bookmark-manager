@@ -37,7 +37,6 @@ export default {
 
   &__input {
     @extend %input;
-    padding: 5px 10px;
     flex-grow: 1;
     background-color: transparent;
   }
