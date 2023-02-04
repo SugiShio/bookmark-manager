@@ -1,7 +1,7 @@
 <template lang="pug">
 section.a-ogp-card
   .a-ogp-card__left
-    img.a-ogp-card__image(:src='ogp.image')
+    .a-ogp-card__image(:style='styleImage')
   .a-ogp-card__right
     h2.a-ogp-card__title {{ ogp.title }}
     p.a-ogp-card__description {{ ogp.description }}
@@ -37,6 +37,8 @@ export default {
 
   &__image {
     background-color: rgba(#bbb, 0.8);
+    background-size: cover;
+    background-position: center center;
     border-radius: 5px;
     flex-shrink: 0;
     width: 80px;

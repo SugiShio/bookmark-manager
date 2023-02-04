@@ -21,21 +21,6 @@ import { db } from '~/plugins/firebase'
 import { Bookmark } from '~/models/bookmark'
 import { Tag } from '~/models/tag'
 
-const extractOgp = (dom) => {
-  const metaElements = dom.head.querySelectorAll('meta')
-  const result = {}
-  Array.from(metaElements)
-    .filter((element) => {
-      return element.hasAttribute('property')
-    })
-    .forEach((element) => {
-      const name = element.getAttribute('name').replace('og:', '')
-      const content = element.getAttribute('content')
-      result[name] = content
-    })
-  return result
-}
-
 export default {
   name: 'IndexPage',
   data() {
@@ -82,11 +67,7 @@ export default {
     },
     async setOgp(url) {
       try {
-        const html = await this.$axios.$get(encodeURI(url), {
-          headers: { 'Access-Control-Allow-Origin': '*' },
-        })
-        const dom = new DOMParser().parseFromString(html, 'text/html')
-        this.ogp = extractOgp(dom)
+        this.ogp = await this.$axios.$get('/api/getOgp', { params: { url } })
       } catch (error) {
         console.error(error)
       }
