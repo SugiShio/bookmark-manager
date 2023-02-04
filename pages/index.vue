@@ -1,6 +1,14 @@
 <template lang="pug">
 main.p-index
-  organisms-bookmark-form(@bookmark-changed='setBookmarks')
+  .p-index__ogp-card
+    atoms-ogp-card(:ogp='ogp')
+
+  .p-index__form
+    organisms-bookmark-form(
+      @bookmark-changed='setBookmarks',
+      @url-input='setOgp'
+    )
+
   ul
     li(v-for='tag in tags') {{ tag.name }}
   ul
@@ -13,11 +21,27 @@ import { db } from '~/plugins/firebase'
 import { Bookmark } from '~/models/bookmark'
 import { Tag } from '~/models/tag'
 
+const extractOgp = (dom) => {
+  const metaElements = dom.head.querySelectorAll('meta')
+  const result = {}
+  Array.from(metaElements)
+    .filter((element) => {
+      return element.hasAttribute('property')
+    })
+    .forEach((element) => {
+      const name = element.getAttribute('name').replace('og:', '')
+      const content = element.getAttribute('content')
+      result[name] = content
+    })
+  return result
+}
+
 export default {
   name: 'IndexPage',
   data() {
     return {
       bookmarks: [],
+      ogp: {},
       tags: [],
     }
   },
@@ -56,6 +80,17 @@ export default {
         console.error(error)
       }
     },
+    async setOgp(url) {
+      try {
+        const html = await this.$axios.$get(encodeURI(url), {
+          headers: { 'Access-Control-Allow-Origin': '*' },
+        })
+        const dom = new DOMParser().parseFromString(html, 'text/html')
+        this.ogp = extractOgp(dom)
+      } catch (error) {
+        console.error(error)
+      }
+    },
     async setTags() {
       const q = query(collection(db, 'tags'), where('uid', '==', this.uid))
       try {
@@ -77,5 +112,9 @@ export default {
   max-width: 600px;
   margin: auto;
   padding: 20px;
+
+  &__form {
+    margin: 20px 0;
+  }
 }
 </style>

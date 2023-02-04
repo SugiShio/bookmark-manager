@@ -1,6 +1,6 @@
 import { Timestamp } from '~/models/timestamp'
 import { Tag } from '~/models/tag'
-export const REGEX_URL = /https?:\/\/.*/
+export const REGEX_URL = /^https?:\/\/.*/
 export class Bookmark extends Timestamp {
   constructor(bookmark = {}) {
     super(bookmark)

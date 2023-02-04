@@ -1,23 +1,35 @@
 
 <template lang="pug">
-form
-  | label
-  atoms-input-text(v-model='label')
-  | url
-  atoms-input-text(v-model='url')
-  | tag
-  atoms-input-text(v-model='tag')
-  atoms-button(@click='addTag') addTag
-  ul
-    li(v-for='tag in tags') {{ tag.name }}
+form.o-bookmark-form
+  .o-bookmark-form__item
+    label.o-bookmark-form__label
+      | URL
+    .o-bookmark-form__content
+      atoms-input-text(
+        v-model='url',
+        placeholder='http://example.com',
+        @focus='onFocus',
+        @input='onUrlInput'
+      )
+
+  .o-bookmark-form__item
+    label.o-bookmark-form__label
+      | label
+    .o-bookmark-form__content
+      atoms-input-text(v-model='label', placeholder='label')
+
+  .o-bookmark-form__item
+    label.o-bookmark-form__label
+      | tag
+    .o-bookmark-form__content
+      atoms-input-tags(v-model='tags', placeholder='tag')
   atoms-button(@click='submit') Submit
 </template>
 
 <script>
 import { collection, addDoc } from 'firebase/firestore'
 import { db, getFirestoreFormat } from '~/plugins/firebase'
-import { Tag } from '~/models/tag'
-import { Bookmark } from '~/models/bookmark'
+import { Bookmark, REGEX_URL } from '~/models/bookmark'
 
 export default {
   name: 'OrganismsBookmarkForm',
@@ -30,10 +42,11 @@ export default {
     }
   },
   methods: {
-    addTag() {
-      if (!this.tag) return
-      this.tags.push(new Tag({ name: this.tag }))
-      this.tag = ''
+    async onFocus() {},
+    onUrlInput(value) {
+      if (REGEX_URL.test(value)) {
+        this.$emit('url-input', value)
+      }
     },
     async submit() {
       const data = new Bookmark({
@@ -67,6 +80,10 @@ export default {
     color: #fff;
     width: 70px;
     flex-shrink: 0;
+  }
+
+  &__item {
+    margin: 10px 0;
   }
 
   &__content {
