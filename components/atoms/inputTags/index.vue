@@ -9,12 +9,10 @@
     button.a-input-tags__button(type='button', @click='emitTags') Enter
   ul.a-input-tags__tag-list
     li.a-input-tags__tag-item(v-for='tag in value')
-      span.a-input-tags__tag {{ tag.name }}
+      span.a-input-tags__tag {{ tag }}
 </template>
 
 <script>
-import { Tag } from '~/models/tag'
-
 export default {
   name: 'AtomsInputTags',
   props: {
@@ -29,7 +27,7 @@ export default {
   methods: {
     emitTags($event) {
       if ($event.isComposing || !this.string) return
-      this.$emit('input', [...this.value, new Tag({ name: this.string })])
+      this.$emit('input', [...this.value, this.string])
       this.string = ''
     },
   },

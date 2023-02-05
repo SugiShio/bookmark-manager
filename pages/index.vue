@@ -12,7 +12,7 @@ main.p-index
     )
 
   ul
-    li(v-for='tag in tags') {{ tag.name }}
+    li(v-for='tag in tags') {{ tag }}
   ul
     li(v-for='bookmark in bookmarks') {{ bookmark.title }}
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-a.a-tag(@click='$emit("click", tag)') {{ tag.name }}
+a.a-tag(@click='$emit("click", tag)') {{ tag }}
 </template>
 
 <script>
@@ -7,7 +7,7 @@ import { Tag } from '~/models/tag'
 export default {
   name: 'AtomsTag',
   props: {
-    tag: { type: Tag, default: () => new Tag() },
+    tag: { type: String, default: '' },
   },
 }
 </script>

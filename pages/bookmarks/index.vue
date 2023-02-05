@@ -88,7 +88,7 @@ export default {
       }
     },
     onTagClicked(tag) {
-      this.setBookmarks({ tag: tag.name })
+      this.setBookmarks({ tag })
     },
   },
 }
