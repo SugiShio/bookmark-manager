@@ -5,6 +5,8 @@ main.p-index
 
   .p-index__form
     organisms-bookmark-form(
+      :ogp-title='ogp.title',
+      :ogp-description='ogp.description',
       @bookmark-changed='setBookmarks',
       @url-input='setOgp'
     )
@@ -12,7 +14,7 @@ main.p-index
   ul
     li(v-for='tag in tags') {{ tag.name }}
   ul
-    li(v-for='bookmark in bookmarks') {{ bookmark.label }}
+    li(v-for='bookmark in bookmarks') {{ bookmark.title }}
 </template>
 
 <script>
