@@ -13,6 +13,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~/assets/stylesheets/variables';
+
 .a-modal {
   position: fixed;
   top: 0;
@@ -23,6 +25,7 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: rgba(#000, 0.9);
+  z-index: $z-index-modal;
 
   &__container {
     margin: 10px;

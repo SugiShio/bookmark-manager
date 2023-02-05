@@ -1,8 +1,9 @@
 <template lang="pug">
 form
-  atoms-input-text(v-model='email')
-  atoms-input-password(v-model='password')
+  atoms-input-text(v-model='email', placeholder='email')
+  atoms-input-password(v-model='password', placeholder='password')
   atoms-button(type='button', @click='signin') Signin
+  p {{ error }}
 </template>
 
 <script>
@@ -14,6 +15,7 @@ export default {
     return {
       email: '',
       password: '',
+      error: '',
     }
   },
   methods: {
@@ -22,6 +24,7 @@ export default {
       try {
         await signInWithEmailAndPassword(auth, this.email, this.password)
       } catch (error) {
+        this.error = error
         console.error(error)
       }
     },

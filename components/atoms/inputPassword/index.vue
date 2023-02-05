@@ -1,6 +1,7 @@
 <template lang="pug">
 .a-input-password
   input.a-input-password__input(
+    :placeholder='placeholder',
     :value='value',
     :type='inputType',
     @input='$emit("input", $event.target.value)',
@@ -16,6 +17,7 @@
 export default {
   name: 'AtomsInputPassword',
   props: {
+    placeholder: { type: String, default: '' },
     value: { type: String, default: '' },
   },
   data() {
