@@ -1,16 +1,19 @@
 <template lang="pug">
-section
-  header
-    atoms-button(v-if='$store.state.isSignin', @click='signout') Signout
-    atoms-button(v-else, @click='showSigninModal = true') Signin
-    atoms-modal(
-      v-if='showSigninModal',
-      @close-clicked='showSigninModal = false'
-    )
-      organisms-signin
-  section
+section.l-default
+  header.l-default__header
+    .l-default__header-left
+      nuxt-link(:to='{ name: "index" }') Top
+    .l-default__header-right
+      atoms-button(v-if='$store.state.isSignin', @click='signout') Signout
+      atoms-button(v-else, @click='showSigninModal = true') Signin
+
+  div
     nuxt
+
   footer footer
+
+  atoms-modal(v-if='showSigninModal', @close-clicked='showSigninModal = false')
+    organisms-signin
 </template>
 
 <script>
@@ -56,5 +59,16 @@ export default {
 
 html {
   background-color: $color-main;
+}
+</style>
+
+<style lang="scss" scoped>
+.l-default {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+  }
 }
 </style>

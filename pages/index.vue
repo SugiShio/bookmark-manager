@@ -1,20 +1,21 @@
 <template lang="pug">
 main.p-index
-  .p-index__ogp-card
-    atoms-ogp-card(:ogp='ogp')
+  template(v-if='isSignin')
+    .p-index__ogp-card
+      atoms-ogp-card(:ogp='ogp')
 
-  .p-index__form
-    organisms-bookmark-form(
-      :ogp-title='ogp.title',
-      :ogp-description='ogp.description',
-      @bookmark-changed='setBookmarks',
-      @url-input='setOgp'
-    )
+    .p-index__form
+      organisms-bookmark-form(
+        :ogp-title='ogp.title',
+        :ogp-description='ogp.description',
+        @bookmark-changed='setBookmarks',
+        @url-input='setOgp'
+      )
 
-  ul
-    li(v-for='tag in tags') {{ tag }}
-  ul
-    li(v-for='bookmark in bookmarks') {{ bookmark.title }}
+    ul
+      li(v-for='tag in tags') {{ tag }}
+    ul
+      li(v-for='bookmark in bookmarks') {{ bookmark.title }}
 
   nuxt-link(:to='{ name: "bookmarks" }') Bookmarks
 </template>
