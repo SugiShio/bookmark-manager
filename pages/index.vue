@@ -15,6 +15,8 @@ main.p-index
     li(v-for='tag in tags') {{ tag.name }}
   ul
     li(v-for='bookmark in bookmarks') {{ bookmark.title }}
+
+  nuxt-link(:to='{ name: "bookmarks" }') Bookmarks
 </template>
 
 <script>
@@ -24,7 +26,7 @@ import { Bookmark } from '~/models/bookmark'
 import { Tag } from '~/models/tag'
 
 export default {
-  name: 'IndexPage',
+  name: 'PagesIndex',
   data() {
     return {
       bookmarks: [],
