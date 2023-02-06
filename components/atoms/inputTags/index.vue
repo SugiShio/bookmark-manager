@@ -12,10 +12,11 @@
       template(v-if='suggests.length')
         li(v-for='suggest in suggests', @click='onSuggestClicked') {{ suggest }}
       template(v-else)
-        li Create a new tag: '{{ string }}'
+        li(@click='newTagInput') Create a new tag: '{{ string }}'
   ul.a-input-tags__tag-list
     li.a-input-tags__tag-item(v-for='tag in value')
       span.a-input-tags__tag {{ tag }}
+        span
 </template>
 
 <script>
@@ -42,6 +43,11 @@ export default {
     }
   },
   methods: {
+    newTagInput() {
+      this.$emit('new-tag-input', this.string)
+      this.string = ''
+      this.suggests = []
+    },
     emitTags() {
       if (!this.string) return
       this.$emit('input', [...this.value, this.string])

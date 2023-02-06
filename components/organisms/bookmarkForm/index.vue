@@ -22,7 +22,11 @@ form.o-bookmark-form
     label.o-bookmark-form__label
       | tag
     .o-bookmark-form__content
-      atoms-input-tags(v-model='tags', placeholder='tag')
+      atoms-input-tags(
+        v-model='tags',
+        placeholder='tag',
+        @new-tag-input='onNewTagInput'
+      )
 
   .o-bookmark-form__item
     label.o-bookmark-form__label
@@ -37,6 +41,7 @@ form.o-bookmark-form
 import { collection, addDoc } from 'firebase/firestore'
 import { db, getFirestoreFormat } from '~/plugins/firebase'
 import { Bookmark, REGEX_URL } from '~/models/bookmark'
+import { Tag } from '~/models/tag'
 
 export default {
   name: 'OrganismsBookmarkForm',
@@ -47,6 +52,7 @@ export default {
   data() {
     return {
       description: '',
+      newTags: [],
       tag: '',
       tags: [],
       title: '',
@@ -70,6 +76,10 @@ export default {
     }
   },
   methods: {
+    onNewTagInput($event) {
+      this.tags.push($event)
+      this.newTags.push(new Tag({ name: $event }))
+    },
     async onFocus() {},
     onUrlInput() {
       if (REGEX_URL.test(this.url)) {
@@ -77,15 +87,22 @@ export default {
       }
     },
     async submit() {
-      const data = new Bookmark({
+      const bookmark = new Bookmark({
         title: this.title,
         tags: this.tags,
         uid: this.$store.state.user.uid,
         url: this.url,
       })
+      const createTagFunctions = this.newTags.map(async (tag) => {
+        await addDoc(collection(db, 'tags'), getFirestoreFormat(tag))
+      })
       try {
-        await addDoc(collection(db, 'bookmarks'), getFirestoreFormat(data))
+        await Promise.all([
+          addDoc(collection(db, 'bookmarks'), getFirestoreFormat(bookmark)),
+          ...createTagFunctions,
+        ])
         this.description = ''
+        this.newTags = []
         this.tags = []
         this.title = ''
         this.url = ''
