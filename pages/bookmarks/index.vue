@@ -1,5 +1,6 @@
 <template lang="pug">
 .p-bookmarks-index
+  h2.p-bookmarks-index__title {{ queryText }}
   ul.p-bookmarks-index__block-list
     li.p-bookmarks-index__block-item(v-for='bookmarkBlock in bookmarkBlocks')
       time.p-bookmarks-index__block-time {{ bookmarkBlock.date }}
@@ -41,6 +42,16 @@ export default {
     uid() {
       return this.$store.state.user.uid
     },
+    queryText() {
+      const query = this.$route.query
+      return Object.keys(query).length
+        ? Object.keys(query)
+            .map((key) => {
+              return `${key}: ${query[key]}`
+            })
+            .join(', ')
+        : 'Bookmarks'
+    },
   },
   watch: {
     isSignin(isSignin) {
@@ -48,10 +59,13 @@ export default {
         this.setBookmarks()
       }
     },
+    '$route.query'(query) {
+      this.setBookmarks(query)
+    },
   },
   created() {
     if (this.isSignin) {
-      this.setBookmarks()
+      this.setBookmarks(this.$route.query)
     }
   },
   methods: {
@@ -88,7 +102,7 @@ export default {
       }
     },
     onTagClicked(tag) {
-      this.setBookmarks({ tag })
+      this.$router.push({ name: 'bookmarks', query: { tag } })
     },
   },
 }
@@ -100,12 +114,20 @@ export default {
   margin: auto;
   padding: 20px;
 
+  &__title {
+    font-size: 18px;
+    color: #fff;
+    margin: 20px 0;
+  }
+
   &__block-list {
     overflow: hidden;
   }
 
   &__block-item {
-    margin: 20px 0;
+    & + & {
+      margin-top: 40px;
+    }
   }
 
   &__block-time {
@@ -128,12 +150,14 @@ export default {
   }
 
   &__bookmark-list {
-    margin: -10px 0 -20px;
+    margin-top: 10px;
     padding-left: 10px;
   }
 
   &__bookmark-item {
-    margin: 20px 0;
+    & + & {
+      margin-top: 20px;
+    }
   }
 
   &__link {

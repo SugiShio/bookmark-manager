@@ -16,7 +16,7 @@ export default {
 .a-tag {
   background-color: rgba(#fff, 0.5);
   border-radius: 3px;
-  padding: 2px 8px;
+  padding: 1px 8px;
   font-size: 12px;
   text-decoration: none;
   cursor: pointer;

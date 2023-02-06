@@ -16,6 +16,7 @@ export default {
 <style lang="scss" scoped>
 .m-tag-list {
   margin: -2px;
+  line-height: 1;
 
   &__item {
     display: inline-block;
