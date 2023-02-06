@@ -11,9 +11,10 @@ main.p-index
         @bookmark-changed='setBookmarks',
         @url-input='setOgp'
       )
+    h2.p-index__title 🌟 Tags
+    molecules-tag-list(:tags='tags', @tag-clicked='onTagClicked')
 
-    ul
-      li(v-for='tag in tags') {{ tag }}
+    h2.p-index__title 🌟 Bookmarks
     ul
       li(v-for='bookmark in bookmarks') {{ bookmark.title }}
 
@@ -21,10 +22,9 @@ main.p-index
 </template>
 
 <script>
-import { collection, query, getDocs, where } from 'firebase/firestore'
+import { collection, query, getDocs, orderBy, where } from 'firebase/firestore'
 import { db } from '~/plugins/firebase'
 import { Bookmark } from '~/models/bookmark'
-import { Tag } from '~/models/tag'
 
 export default {
   name: 'PagesIndex',
@@ -58,6 +58,10 @@ export default {
     }
   },
   methods: {
+    onTagClicked(tag) {
+      this.$router.push({ name: 'bookmarks', query: { tag } })
+    },
+
     async setBookmarks() {
       const q = query(collection(db, 'bookmarks'), where('uid', '==', this.uid))
       try {
@@ -78,12 +82,12 @@ export default {
       }
     },
     async setTags() {
-      const q = query(collection(db, 'tags'), where('uid', '==', this.uid))
+      const q = query(collection(db, 'tags'), orderBy('createdAt', 'desc'))
       try {
         const querySnapshot = await getDocs(q)
         this.tags = []
         querySnapshot.forEach((doc) => {
-          this.tags.push(new Tag(doc.data()))
+          this.tags.push(doc.data().name)
         })
       } catch (error) {
         console.error(error)
@@ -98,6 +102,12 @@ export default {
   max-width: 600px;
   margin: auto;
   padding: 20px;
+
+  &__title {
+    color: #fff;
+    font-size: 18px;
+    margin: 40px 0 10px;
+  }
 
   &__form {
     margin: 20px 0;
