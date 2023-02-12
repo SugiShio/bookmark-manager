@@ -1,4 +1,14 @@
 import Sass from 'sass'
+console.log(process.env.NODE_ENV)
+const env = process.env.NODE_ENV
+const config = {
+  development: {
+    apiBaseUrl: 'http://localhost:3000',
+  },
+  production: {
+    apiBaseUrl: 'https://bookmark-manager-five.vercel.app/',
+  },
+}
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -57,7 +67,7 @@ export default {
   proxy: {
     // serverMiddlewareへ転送する
     '/api/': {
-      target: 'http://localhost:3000',
+      target: config[env].apiBaseUrl,
     },
   },
 
