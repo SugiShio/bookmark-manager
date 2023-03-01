@@ -64,14 +64,12 @@ export default {
     debug: true,
   },
 
-  proxy: {
-    // serverMiddlewareへ転送する
-    '/api/': {
-      target: config[env].apiBaseUrl,
+  serverMiddleware: [
+    {
+      path: '/api/getOgp',
+      handler: '~/api/getOgp.js',
     },
-  },
-
-  serverMiddleware: ['~/server/api'],
+  ],
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {

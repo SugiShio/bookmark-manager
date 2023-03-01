@@ -1,16 +1,12 @@
 import axios from 'axios'
-import express from 'express'
 import { JSDOM } from 'jsdom'
 
-const app = express()
+export default async (req, res) => {
+  const url = new URL(req.url, 'http://localhost')
+  const param = url.searchParams.get('url')
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-app.get('/api/getOgp', async (req, res) => {
-  const url = req.query.url
   try {
-    const resData = await axios.get(url)
+    const resData = await axios.get(param)
     const dom = new JSDOM(resData.data)
     const metaElements = dom.window.document.head.querySelectorAll('meta')
     const result = {}
@@ -23,11 +19,10 @@ app.get('/api/getOgp', async (req, res) => {
         const content = element.getAttribute('content')
         result[name] = content
       })
-    res.send(result)
+    res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' })
+    res.end(JSON.stringify(result), 'utf8')
   } catch (error) {
-    console.error(error)
-    res.send(error)
+    const status = error.response && error.response.status
+    res.writeHead(status).end()
   }
-})
-
-export default app
+}
