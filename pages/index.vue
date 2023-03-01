@@ -1,13 +1,16 @@
 <template lang="pug">
 main.p-index
   template(v-if='isSignin')
-    .p-index__ogp-card
+    .p-index__fetching(v-if='isFetching')
+      | OGP取得中
+    .p-index__error(v-else-if='hasError')
+      | エラー
+    .p-index__ogp-card(v-else-if='ogp')
       atoms-ogp-card(:ogp='ogp')
 
     .p-index__form
       organisms-bookmark-form(
-        :ogp-title='ogp.title',
-        :ogp-description='ogp.description',
+        :ogp='ogp',
         @bookmark-changed='setBookmarks',
         @url-input='setOgp'
       )
@@ -31,7 +34,9 @@ export default {
   data() {
     return {
       bookmarks: [],
-      ogp: {},
+      isFetching: false,
+      hasError: false,
+      ogp: null,
       tags: [],
     }
   },
@@ -75,9 +80,14 @@ export default {
       }
     },
     async setOgp(url) {
+      this.isFetching = true
+      this.hasError = false
       try {
         this.ogp = await this.$axios.$get('/api/getOgp', { params: { url } })
+        this.isFetching = false
       } catch (error) {
+        this.isFetching = false
+        this.hasError = true
         console.error(error)
       }
     },
@@ -102,6 +112,12 @@ export default {
   max-width: 600px;
   margin: auto;
   padding: 20px;
+
+  &__fetching,
+  &__error {
+    color: #fff;
+    text-align: center;
+  }
 
   &__title {
     color: #fff;

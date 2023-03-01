@@ -47,7 +47,11 @@ export default {
 
   &__title {
     color: #fff;
+    display: -webkit-box;
     font-weight: bold;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
   }
 
   &__description {

@@ -46,8 +46,12 @@ import { Tag } from '~/models/tag'
 export default {
   name: 'OrganismsBookmarkForm',
   props: {
-    ogpTitle: { type: String, default: '' },
-    ogpDescription: { type: String, default: '' },
+    ogp: {
+      type: Object,
+      default: () => {
+        return {}
+      },
+    },
   },
   data() {
     return {
@@ -60,10 +64,10 @@ export default {
     }
   },
   watch: {
-    ogpTitle(ogpTitle) {
+    'ogp.title'(ogpTitle) {
       this.title = ogpTitle
     },
-    ogpDescription(ogpDescription) {
+    'ogp.description'(ogpDescription) {
       this.description = ogpDescription
     },
   },
