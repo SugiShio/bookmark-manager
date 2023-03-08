@@ -3,8 +3,8 @@ main.p-index
   template(v-if='isSignin')
     .p-index__fetching(v-if='isFetching')
       | OGP取得中
-    .p-index__error(v-else-if='hasError')
-      | エラー
+    .p-index__message(v-else-if='!!message')
+      | {{ message }}
     .p-index__ogp-card(v-else-if='ogp')
       atoms-ogp-card(:ogp='ogp')
 
@@ -12,7 +12,7 @@ main.p-index
       organisms-bookmark-form(
         :ogp='ogp',
         @bookmark-changed='setBookmarks',
-        @url-input='setOgp'
+        @url-input='onUrlInput'
       )
     h2.p-index__title 🌟 Tags
     molecules-tag-list(:tags='tags', @tag-clicked='onTagClicked')
@@ -36,6 +36,7 @@ export default {
       bookmarks: [],
       isFetching: false,
       hasError: false,
+      message: '',
       ogp: null,
       tags: [],
     }
@@ -65,6 +66,23 @@ export default {
   methods: {
     onTagClicked(tag) {
       this.$router.push({ name: 'bookmarks', query: { tag } })
+    },
+
+    async onUrlInput(url) {
+      this.message = ''
+      const q = query(
+        collection(db, 'bookmarks'),
+        where('uid', '==', this.uid),
+        where('url', '==', url)
+      )
+      try {
+        const querySnapshot = await getDocs(q)
+        if (!!querySnapshot.size)
+          this.message = 'すでにブックマークされているURLです'
+        this.setOgp(url)
+      } catch (e) {
+        console.error(e)
+      }
     },
 
     async setBookmarks() {
@@ -114,7 +132,7 @@ export default {
   padding: 20px;
 
   &__fetching,
-  &__error {
+  &__message {
     color: #fff;
     text-align: center;
   }
