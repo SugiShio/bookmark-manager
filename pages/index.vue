@@ -3,7 +3,7 @@ main.p-index
   template(v-if='isSignin')
     .p-index__fetching(v-if='isFetching')
       | OGP取得中
-    .p-index__message(v-else-if='!!message')
+    .p-index__message(v-else-if='message')
       | {{ message }}
     .p-index__ogp-card(v-else-if='ogp')
       atoms-ogp-card(:ogp='ogp')
@@ -77,7 +77,7 @@ export default {
       )
       try {
         const querySnapshot = await getDocs(q)
-        if (!!querySnapshot.size)
+        if (querySnapshot.size > 0)
           this.message = 'すでにブックマークされているURLです'
         this.setOgp(url)
       } catch (e) {

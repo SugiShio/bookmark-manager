@@ -28,6 +28,7 @@ import {
   where,
   query,
 } from 'firebase/firestore'
+import { client } from '~/plugins/algolia'
 import { db } from '~/plugins/firebase'
 
 export default {
@@ -65,25 +66,23 @@ export default {
       this.string = $event.target.textContent
       this.emitTags()
     },
-    async searchTag($event) {
+
+    searchTag($event) {
       const value = $event.target.value
       if (!value || $event.isComposing) return
 
-      const q = query(
-        collection(db, 'tags'),
-        where('name', '==', value),
-        // orderBy('createdAt'),
-        limit(10)
-      )
-      try {
-        const querySnapshot = await getDocs(q)
-        this.suggests = []
-        querySnapshot.forEach((doc) => {
-          this.suggests.push(doc.data().name)
+      const index = client.initIndex('tags')
+      index
+        .search(value)
+        .then(({ hits }) => {
+          this.suggests = []
+          hits.forEach((hit) => {
+            this.suggests.push(hit.name)
+          })
         })
-      } catch (error) {
-        console.error(error)
-      }
+        .catch((error) => {
+          console.error(error)
+        })
     },
   },
 }
