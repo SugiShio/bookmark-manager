@@ -17,11 +17,11 @@ main.p-index
     h2.p-index__title 🌟 Tags
     molecules-tag-list(:tags='tags', @tag-clicked='onTagClicked')
 
-    h2.p-index__title 🌟 Bookmarks
+    h2.p-index__title
+      nuxt-link(:to='{ name: "bookmarks" }')
+        | 🌟 Bookmarks
     ul
       li(v-for='bookmark in bookmarks') {{ bookmark.title }}
-
-  nuxt-link(:to='{ name: "bookmarks" }') Bookmarks
 </template>
 
 <script>

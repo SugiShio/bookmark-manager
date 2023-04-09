@@ -20,16 +20,7 @@
 </template>
 
 <script>
-import {
-  collection,
-  getDocs,
-  limit,
-  orderBy,
-  where,
-  query,
-} from 'firebase/firestore'
 import { client } from '~/plugins/algolia'
-import { db } from '~/plugins/firebase'
 
 export default {
   name: 'AtomsInputTags',

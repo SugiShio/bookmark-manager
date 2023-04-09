@@ -4,7 +4,8 @@ input.a-input-text(
   :value='value',
   @change='$emit("change", $event.target.value)',
   @input='$emit("input", $event.target.value)',
-  @focus='$emit("focus")'
+  @focus='$emit("focus")',
+  @keydown.enter='onEnter'
 )
 </template>
 
@@ -14,6 +15,11 @@ export default {
   props: {
     placeholder: { type: String, default: '' },
     value: { type: String, default: '' },
+  },
+  methods: {
+    onEnter($event) {
+      if (!$event.isComposing) this.$emit('enter')
+    },
   },
 }
 </script>

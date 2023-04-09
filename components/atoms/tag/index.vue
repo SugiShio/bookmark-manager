@@ -14,10 +14,11 @@ export default {
 
 <style lang="scss" scoped>
 .a-tag {
-  background-color: rgba(#fff, 0.5);
+  background-color: rgba(#fff, 0.2);
   border-radius: 3px;
   padding: 1px 8px;
-  font-size: 12px;
+  color: #fff;
+  font-size: 11px;
   text-decoration: none;
   cursor: pointer;
 }
