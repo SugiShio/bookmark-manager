@@ -13,6 +13,7 @@
         li(v-for='suggest in suggests', @click='onSuggestClicked') {{ suggest }}
       template(v-else)
         li(@click='newTagInput') Create a new tag: '{{ string }}'
+
   ul.a-input-tags__tag-list
     li.a-input-tags__tag-item(v-for='tag in value')
       span.a-input-tags__tag {{ tag }}

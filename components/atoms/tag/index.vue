@@ -3,7 +3,6 @@ a.a-tag(@click='$emit("click", tag)') {{ tag }}
 </template>
 
 <script>
-import { Tag } from '~/models/tag'
 export default {
   name: 'AtomsTag',
   props: {

@@ -93,6 +93,7 @@ export default {
     async submit() {
       const bookmark = new Bookmark({
         title: this.title,
+        description: this.description,
         tags: this.tags,
         uid: this.$store.state.user.uid,
         url: this.url,

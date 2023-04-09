@@ -34,6 +34,7 @@ export default {
   data() {
     return {
       bookmarks: [],
+      isAlreadyBookmarked: false,
       isFetching: false,
       hasError: false,
       message: '',
