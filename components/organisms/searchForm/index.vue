@@ -27,7 +27,8 @@ import { Bookmark } from '~/models/bookmark'
 export default {
   name: 'OrganismsSearchForm',
   data() {
-    return { searchString: '', tag: '', tags: [] }
+    const tags = this.$route.query.tags ? this.$route.query.tags.split(',') : []
+    return { searchString: '', tag: '', tags }
   },
   created() {
     this.searchBookmark()
@@ -44,8 +45,6 @@ export default {
       if (index > -1) this.tags.splice(index)
     },
     searchBookmark() {
-      if (!this.searchString) return
-
       const index = client.initIndex('bookmarks')
       index
         .search(this.searchString, {
