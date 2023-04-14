@@ -44,8 +44,9 @@ export default {
   methods: {
     async onClick() {
       try {
+        this.bookmark.incrementViewed()
         await updateDoc(doc(db, 'bookmarks', this.bookmark.id), {
-          viewed: this.bookmark.viewed + 1,
+          viewed: this.bookmark.viewed,
         })
       } catch (e) {
         console.error(e)

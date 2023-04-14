@@ -2,7 +2,7 @@
 .p-bookmarks-index
   h2.p-bookmarks-index__title Bookmark
   .p-bookmarks-index__form
-    organisms-search-form
+    organisms-search-form(@bookmarks-changed='setBookmarks')
 
   ul.p-bookmarks-index__list
     li.p-bookmarks-index__item(v-for='bookmark in bookmarks')
@@ -10,28 +10,16 @@
 </template>
 
 <script>
-import { doc, updateDoc } from 'firebase/firestore'
-import { db } from '~/plugins/firebase'
-
 export default {
   name: 'PagesBookmarksIndex',
-  computed: {
-    bookmarks() {
-      return this.$store.state.bookmarks.bookmarks
-    },
-  },
-  created() {
-    // if (this.isSignin) {}
+  data() {
+    return {
+      bookmarks: [],
+    }
   },
   methods: {
-    async onClick(bookmark) {
-      try {
-        await updateDoc(doc(db, 'bookmarks', bookmark.id), {
-          viewed: bookmark.viewed + 1,
-        })
-      } catch (e) {
-        console.error(e)
-      }
+    setBookmarks(bookmarks) {
+      this.bookmarks = bookmarks
     },
   },
 }

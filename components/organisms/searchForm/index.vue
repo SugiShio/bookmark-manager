@@ -46,11 +46,10 @@ export default {
           tagFilters: this.tags,
         })
         .then(({ hits }) => {
-          this.$store.commit('bookmarks/resetBookmakrs')
           const bookmarks = hits.map((hit) => {
             return new Bookmark({ id: hit.objectID, ...hit })
           })
-          this.$store.commit('bookmarks/setBookmarks', bookmarks)
+          this.$emit('bookmarks-changed', bookmarks)
         })
         .catch((error) => {
           console.error(error)

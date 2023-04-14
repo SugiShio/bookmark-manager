@@ -12,4 +12,8 @@ export class Bookmark extends Timestamp {
     this.url = bookmark.url || ''
     this.viewed = bookmark.viewed || 0
   }
+
+  incrementViewed() {
+    this.viewed++
+  }
 }
