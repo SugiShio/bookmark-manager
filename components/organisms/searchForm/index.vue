@@ -1,8 +1,17 @@
 <template lang="pug">
 .o-search-form
   .o-search-form__input-container
-    input.o-search-form__input(v-model='searchString', @enter='searchBookmark')
+    input.o-search-form__input(
+      v-model='searchString',
+      @keydown.enter='searchBookmark'
+    )
     button.o-search-form__button(type='button', @click='searchBookmark') search
+  .o-search-form__input-container
+    input.o-search-form__input(v-model='tag', @keydown.enter='enterTag')
+  ul
+    li(v-for='tag in tags')
+      | {{ tag }}
+      span(@click='removeTag(tag)') x
 </template>
 
 <script>
@@ -12,18 +21,30 @@ import { Bookmark } from '~/models/bookmark'
 export default {
   name: 'OrganismsSearchForm',
   data() {
-    return { searchString: 'あんこ' }
+    return { searchString: '', tag: '', tags: [] }
   },
   created() {
     this.searchBookmark()
   },
   methods: {
+    enterTag($event) {
+      if ($event.isComposing) return
+
+      this.tags.push(this.tag)
+      this.tag = ''
+    },
+    removeTag(tag) {
+      const index = this.tags.indexOf(tag)
+      if (index > -1) this.tags.splice(index)
+    },
     searchBookmark() {
       if (!this.searchString) return
 
       const index = client.initIndex('bookmarks')
       index
-        .search(this.searchString)
+        .search(this.searchString, {
+          tagFilters: this.tags,
+        })
         .then(({ hits }) => {
           this.$store.commit('bookmarks/resetBookmakrs')
           const bookmarks = hits.map((hit) => {
@@ -46,6 +67,7 @@ export default {
     @extend %input;
     display: flex;
     justify-content: space-between;
+    width: 100%;
   }
 
   &__input {

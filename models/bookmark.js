@@ -6,6 +6,7 @@ export class Bookmark extends Timestamp {
     this.id = bookmark.id
     this.description = bookmark.description || ''
     this.tags = bookmark.tags || []
+    this._tags = this.tags
     this.title = bookmark.title || ''
     this.uid = bookmark.uid || ''
     this.url = bookmark.url || ''
