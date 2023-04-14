@@ -123,6 +123,8 @@ export default {
 <style lang="scss" scoped>
 .o-bookmark-form {
   &__item {
+    margin: 10px 0;
+
     @media screen and (min-width: 600px) {
       display: flex;
     }
@@ -134,10 +136,6 @@ export default {
     width: 70px;
     flex-shrink: 0;
     font-size: 13px;
-  }
-
-  &__item {
-    margin: 10px 0;
   }
 
   &__content {
