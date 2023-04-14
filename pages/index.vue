@@ -14,18 +14,30 @@ main.p-index
         @bookmark-changed='setBookmarks',
         @url-input='onUrlInput'
       )
-    h2.p-index__title 🌟 Tags
-    molecules-tag-list(:tags='tags', @tag-clicked='onTagClicked')
 
     h2.p-index__title
-      nuxt-link(:to='{ name: "bookmarks" }')
-        | 🌟 Bookmarks
-    ul
-      li(v-for='bookmark in bookmarks') {{ bookmark.title }}
+      | 🌟 Recent bookmarks
+    ul.p-index__bookmark-list
+      li(v-for='bookmark in bookmarks')
+        a.p-index__bookmark-link(:href='bookmark.url') {{ bookmark.title }}
+    .p-index__more-link
+      nuxt-link(:to='{ name: "bookmarks" }') See more
+
+    h2.p-index__title 🌟 Popular tags
+    molecules-tag-list(:tags='tags', @tag-clicked='onTagClicked')
+    .p-index__more-link
+      nuxt-link(:to='{ name: "tags" }') See more
 </template>
 
 <script>
-import { collection, query, getDocs, orderBy, where } from 'firebase/firestore'
+import {
+  collection,
+  limit,
+  query,
+  getDocs,
+  orderBy,
+  where,
+} from 'firebase/firestore'
 import { db } from '~/plugins/firebase'
 import { Bookmark } from '~/models/bookmark'
 
@@ -87,7 +99,12 @@ export default {
     },
 
     async setBookmarks() {
-      const q = query(collection(db, 'bookmarks'), where('uid', '==', this.uid))
+      const q = query(
+        collection(db, 'bookmarks'),
+        orderBy('createdAt', 'desc'),
+        where('uid', '==', this.uid),
+        limit(5)
+      )
       try {
         const querySnapshot = await getDocs(q)
         this.bookmarks = []
@@ -111,7 +128,11 @@ export default {
       }
     },
     async setTags() {
-      const q = query(collection(db, 'tags'), orderBy('createdAt', 'desc'))
+      const q = query(
+        collection(db, 'tags'),
+        orderBy('createdAt', 'desc'),
+        limit(10)
+      )
       try {
         const querySnapshot = await getDocs(q)
         this.tags = []
@@ -146,6 +167,51 @@ export default {
 
   &__form {
     margin: 20px 0;
+  }
+
+  &__bookmark-list {
+    margin: 10px 0;
+  }
+
+  &__bookmark-link {
+    color: #fff;
+  }
+
+  &__more-link {
+    margin-top: 15px;
+    text-align: right;
+
+    a {
+      padding-right: 30px;
+      position: relative;
+      font-size: 11px;
+      color: #fff;
+      text-decoration: none;
+
+      &::before,
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        background-color: #fff;
+      }
+
+      &::before {
+        right: 0;
+        bottom: 5px;
+        height: 1px;
+        width: 7px;
+        transform: rotate(45deg);
+        transform-origin: 100%;
+      }
+
+      &::after {
+        right: 0;
+        bottom: 5px;
+        height: 1px;
+        width: 25px;
+      }
+    }
   }
 }
 </style>
