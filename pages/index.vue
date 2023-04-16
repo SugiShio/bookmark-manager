@@ -24,7 +24,7 @@ main.p-index
       nuxt-link(:to='{ name: "bookmarks" }') See more
 
     h2.p-index__title 🌟 Popular tags
-    molecules-tag-list(:tags='tags', @tag-clicked='onTagClicked')
+    molecules-tag-list(:tags='tags')
     .p-index__more-link
       nuxt-link(:to='{ name: "tags" }') See more
 </template>
@@ -77,10 +77,6 @@ export default {
     }
   },
   methods: {
-    onTagClicked(tag) {
-      this.$router.push({ name: 'bookmarks', query: { tag } })
-    },
-
     async onUrlInput(url) {
       this.message = ''
       const q = query(

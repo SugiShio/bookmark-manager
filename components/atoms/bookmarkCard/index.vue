@@ -1,9 +1,5 @@
 <template lang="pug">
-a.a-bookmark-card(
-  :href='bookmark.url',
-  @click='onClick(bookmark)',
-  target='_blank'
-)
+a.a-bookmark-card(@click='onClick(bookmark)')
   .a-bookmark-card__ogp-image(:style='{ backgroundImage: `url(${ogpImage})` }')
   .a-bookmark-card__content
     h3.a-bookmark-card__title {{ bookmark.title }}
@@ -43,6 +39,7 @@ export default {
   },
   methods: {
     async onClick() {
+      window.open(this.bookmark.url, '_blank')
       try {
         this.bookmark.incrementViewed()
         await updateDoc(doc(db, 'bookmarks', this.bookmark.id), {

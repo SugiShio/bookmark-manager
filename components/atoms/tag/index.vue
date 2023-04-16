@@ -1,5 +1,5 @@
 <template lang="pug">
-a.a-tag(@click='$emit("click", tag)') {{ tag }}
+a.a-tag(@click.stop='onClick') {{ tag }}
 </template>
 
 <script>
@@ -7,6 +7,11 @@ export default {
   name: 'AtomsTag',
   props: {
     tag: { type: String, default: '' },
+  },
+  methods: {
+    onClick() {
+      this.$router.push({ name: 'bookmarks', query: { tags: this.tag } })
+    },
   },
 }
 </script>

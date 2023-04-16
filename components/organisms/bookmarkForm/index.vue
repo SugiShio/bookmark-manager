@@ -8,7 +8,6 @@ form.o-bookmark-form
       atoms-input-text(
         v-model='url',
         placeholder='http://example.com',
-        @focus='onFocus',
         @input='onUrlInput'
       )
 
@@ -24,8 +23,9 @@ form.o-bookmark-form
     .o-bookmark-form__content
       atoms-input-tags(
         v-model='tags',
-        placeholder='tag',
-        @new-tag-input='onNewTagInput'
+        :creatable='true',
+        @new-tag-input='onNewTagInput',
+        @remove-clicked='onRemoveClicked'
       )
 
   .o-bookmark-form__item
@@ -57,7 +57,6 @@ export default {
     return {
       description: '',
       newTags: [],
-      tag: '',
       tags: [],
       title: '',
       url: '',
@@ -81,15 +80,25 @@ export default {
   },
   methods: {
     onNewTagInput($event) {
-      this.tags.push($event)
       this.newTags.push(new Tag({ name: $event }))
     },
-    async onFocus() {},
+
+    onRemoveClicked(tag) {
+      const indexInTags = this.tags.indexOf(tag)
+      if (indexInTags > -1) this.tags.splice(indexInTags, 1)
+
+      const indexInNewTags = this.newTags.findIndex(
+        (newTag) => newTag.name === tag
+      )
+      if (indexInNewTags > -1) this.newTags.splice(indexInNewTags, 1)
+    },
+
     onUrlInput() {
       if (REGEX_URL.test(this.url)) {
         this.$emit('url-input', this.url)
       }
     },
+
     async submit() {
       const bookmark = new Bookmark({
         title: this.title,

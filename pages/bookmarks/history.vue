@@ -12,10 +12,7 @@
           a.p-bookmarks-index__link(:href='bookmark.url', target='_blank')
             | {{ bookmark.title }}
 
-          molecules-tag-list(
-            :tags='bookmark.tags',
-            @tag-clicked='onTagClicked'
-          )
+          molecules-tag-list(:tags='bookmark.tags')
 </template>
 <script>
 import {
@@ -101,9 +98,6 @@ export default {
       } catch (error) {
         console.error(error)
       }
-    },
-    onTagClicked(tag) {
-      this.$router.push({ name: 'bookmarks', query: { tag } })
     },
   },
 }

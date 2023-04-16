@@ -1,7 +1,7 @@
 <template lang="pug">
 ul.m-tag-list
   li.m-tag-list__item(v-for='tag in tags')
-    atoms-tag(:tag='tag', @click='$emit("tag-clicked", $event)')
+    atoms-tag(:tag='tag')
 </template>
 
 <script>
