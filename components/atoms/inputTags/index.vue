@@ -15,7 +15,7 @@
     ul.a-input-tags__suggest-list(v-show='showSuggests')
       template(v-if='suggests.length')
         li(v-for='tag in suggests', @click='onSuggestClicked(tag)') {{ tag }}
-      template(v-else-if='creatable')
+      template(v-if='showCreate')
         li(@click='newTagInput') Create a new tag: '{{ string }}'
 </template>
 
@@ -36,6 +36,9 @@ export default {
     }
   },
   computed: {
+    showCreate() {
+      return this.creatable && !this.suggests.includes(this.string)
+    },
     showSuggests() {
       return this.suggests.length || (this.string && this.creatable)
     },
