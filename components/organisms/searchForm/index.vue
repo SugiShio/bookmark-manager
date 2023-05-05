@@ -4,7 +4,11 @@
     label.o-search-form__label
       | Keyword
     .o-search-form__content
-      atoms-input-text(v-model='searchString', @enter='searchBookmark')
+      atoms-input-text(
+        v-model='searchString',
+        @enter='searchBookmark',
+        @change='searchBookmark'
+      )
 
   .o-search-form__item
     label.o-search-form__label
@@ -12,8 +16,10 @@
     .o-search-form__content
       atoms-input-tags(v-model='tags', @remove-clicked='removeTag')
 
-  button.o-search-form__button(type='button', @click='searchBookmark') search
-  input(v-model='hitsPerPage')
+  .o-search-form__item
+    atoms-button(@click='searchBookmark') Search
+
+  //- input(v-model='hitsPerPage')
 </template>
 
 <script>
