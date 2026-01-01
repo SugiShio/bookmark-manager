@@ -28,7 +28,10 @@ export default {
           'width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'apple-touch-icon', sizes: '180x180', href: '/icon.png' },
+    ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
